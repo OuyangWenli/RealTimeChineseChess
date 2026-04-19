@@ -35,7 +35,7 @@ Item {
                     var rawY = mouse.y / scaleY;
 
                     var lx = Math.round((rawX - 813) / 138.0); // 注意要四舍五入，因为可能点得不太准
-                    var ly = Math.round((rawY - 195) / 125.0); // 这里要和 Piece.qml 中一致为125
+                    var ly = Math.round((rawY - 195) / 125.0);
 
                     if (lx >= 0 && lx <= 8 && ly >= 0 && ly <= 9) {
                         var logicX = boardRoot.selectedPiece.logicX;
@@ -92,7 +92,6 @@ Item {
     Connections {
         target: network
         function onMoveReceived(fx, fy, tx, ty) {
-            // Find remote piece in QML
             var p = null;
             for (var i = 0; i < boardRoot.children.length; ++i) {
                 var child = boardRoot.children[i];
@@ -106,7 +105,6 @@ Item {
             var isGeneral = (p.pieceName === "Red_G" || p.pieceName === "Black_G");
             var isRed = (p.color === "red");
 
-            // Deduct points locally
             if (!isGeneral) {
                 if (isRed) {
                     globalRule.point_red = globalRule.point_red - 1;
@@ -115,13 +113,10 @@ Item {
                 }
             }
 
-            // Sync C++ board (Wait, if main.cpp did it, then it is double moved. So we remove it from main.cpp!)
             board.movePiece(fx, fy, tx, ty);
 
-            // Sync QML piece CD
             p.startCD(board.getPieceQml(tx, ty));
 
-            // Sync visual
             p.logicX = tx;
             p.logicY = ty;
         }

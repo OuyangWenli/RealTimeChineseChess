@@ -154,7 +154,7 @@ Item {
                                 network.disconnectFromServer();
                             }
                             globalRule.resetRule();
-                            board.resetBoard(); // 这里大换血，安全度过
+                            board.resetBoard();
                         });
                     }
                 }

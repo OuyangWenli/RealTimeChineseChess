@@ -48,8 +48,6 @@ public:
     std::vector<Piece *> getPieceArr(int color) const; // 获得指定颜色的棋子数组
     General *getGeneral(int color) const; // 获取指定颜色的将
 
-    bool isInCheck(int color); // 检查指定颜色方的“将/帅”是否被将军
-
     bool isNoAttackPiece(int color) const; // 检查指定颜色方是否已无进攻性棋子
     bool isFiftyMovesWithoutCapture() const; // 判断是否达到60步无吃子（和棋规则）
     bool isTieGame() const;

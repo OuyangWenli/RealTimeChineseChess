@@ -151,7 +151,9 @@ bool Board::canMove(int fromX, int fromY, int toX, int toY) {
 
     bool res = p->canMove(toX, toY, *this);
     return res;
-}// 判断游戏是否结束：如果任一将被吃掉，游戏结束
+}
+
+// 判断游戏是否结束：如果任一将被吃掉，游戏结束
 bool Board::isGameOver() const {
     return !general01->isAlive() || !general11->isAlive();
 }
@@ -160,23 +162,6 @@ int Board::getWinner() const {
     if (!general01->isAlive()) return 1; // 黑胜
     if (!general11->isAlive()) return 0; // 红胜
     return -1;
-}
-
-//被将军判断
-bool Board::isInCheck(int color) {
-    Piece* general = getGeneral(color);
-    if (!general) return false;
-    int gx = general->getX();
-    int gy = general->getY();
-
-    for (int i = 0; i < 16; i++){
-        Piece* piece = getPieceArr(1 - color)[i];
-        if (piece && piece->isAlive() && piece->canMove(gx, gy, *this)) {// 如果对方的棋子可以移动到将的位置，说明将被将军了
-            static_cast<General*>(general)->setIsInCheck(true); 
-            return true; 
-        }
-    }
-    return false;
 }
 
 // 和棋判断：双方没有进攻棋子或60步没有吃子

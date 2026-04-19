@@ -92,8 +92,6 @@ Item {
                     // 说明是后台到点涨了1层，清空圆圈重新进入下一层循环充能
                     piece.cdPercent = 0.0;
                     cdTimer.lastTime = Date.now();
-                } else {
-                    // 圈转到一半玩家又消耗了一层力量，【不要】重置其正在充能的 cd 圈！
                 }
             }
         }
@@ -108,7 +106,7 @@ Item {
 
     Timer {
         id: cdTimer
-        interval: 16 // 约60帧 (1000ms / 60 ≈ 16)
+        interval: 16 // 60帧 
         repeat: true
         running: false
         property var lastTime: 0
