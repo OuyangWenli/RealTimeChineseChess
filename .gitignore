@@ -1,0 +1,40 @@
+# CMake & Build artifacts
+build/
+build-*/
+out/
+output/
+bin/
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+*.cmake
+*.ninja
+
+# VS Code settings
+.vscode/
+
+# Qt specific
+*.user
+*.user.*
+moc_*.cpp
+qrc_*.cpp
+ui_*.h
+Makefile*
+*.qmlc
+*.jsc
+
+# Executables & Binaries
+*.exe
+*.dll
+*.so
+*.dylib
+*.obj
+*.o
+*.a
+*.lib
+*.pdb
+
+# OS generated files
+.DS_Store
+Thumbs.db
