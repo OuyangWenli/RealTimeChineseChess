@@ -132,7 +132,7 @@ Item {
                             delaySendMatch.stop();
                             matchStatusText.text = "匹配中...";
 
-                            network.connectToServer("38.55.134.186", 8888, 0);
+                            network.connectToServer("chess.ouyangwenli.fun", 8888, 0);
 
                             // 延时2000ms等待 Socket 连上
                             delaySendMatch.start();
