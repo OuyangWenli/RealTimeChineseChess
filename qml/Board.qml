@@ -52,16 +52,19 @@ Item {
                                 return;
                             }
 
-                            if (!isGeneral) {
-                                if (isRed) {
-                                    globalRule.point_red = globalRule.point_red - 1;
-                                } else {
-                                    globalRule.point_black = globalRule.point_black - 1;
-                                }
-                            }
-
                             if (network.isConnected) {
                                 network.sendMove(logicX, logicY, lx, ly);
+                                boardRoot.selectedPiece.isSelected = false; // 仅发送请求不立刻走棋，放下棋子由服务器仲裁
+                                boardRoot.selectedPiece = null;
+                                return;
+                            }
+
+                            if (!isGeneral) {
+                                if (isRed) {
+                                    globalRule.point_red -= 1;
+                                } else {
+                                    globalRule.point_black -= 1;
+                                }
                             }
 
                             // 调用后端 movePiece 移动

@@ -16,7 +16,7 @@ Item {
             imageName: "JiNeng"
             parentBoard: boardContainer.chessBoardImage
             onClicked: {
-                messageDialog.show("敬请期待");
+                messageDialog.show(300,150,"敬请期待");
             }
         }
 
@@ -32,34 +32,65 @@ Item {
                 matchDialog.visible = true;
             }
         }
+
+        Button {
+            logicX: 6
+            logicY: 3
+            imageName: "Introduction"
+            parentBoard: boardContainer.chessBoardImage
+            onClicked: {
+                messageDialog.show(800,350,"实时对战象棋\n
+完全摒弃“你拍一我拍一”的老旧回合制定式\n
+所有棋子的移动共享指挥点数，红黑双方分别拥有一个随时间逐渐恢复的指挥点槽\n
+将帅移动不需要消耗指挥点\n
+每个棋子有自己的体力点数，行动需要消耗体力，兵、士、象体力充足时可以连走两步\n
+将帅见面时可直接使用将吃掉对方的将");
+            }
+        }
+
+        Button {
+            logicX: 2
+            logicY: 3
+            imageName: "Developer"
+            parentBoard: boardContainer.chessBoardImage
+            onClicked: {
+                messageDialog.show(500,250,"音乐资源：爱给网小呆瓜_26，爱给网子沐mumu\n
+图片资源：豆包\n
+界面设计：欧阳文璃\n
+后端开发：欧阳文璃\n
+测试：欧阳文璃");
+            }
+        }
     }
 
-    // 原生轻量提示框
+    // 消息提示弹窗，提示信息后点击任意位置即可关闭
     Rectangle {
         id: messageDialog
-        width: 300
-        height: 150
+        width: 0
+        height: 0
         color: "white"
         radius: 10
-        border.color: "#ccc"
+        border.color: '#b5b3b3'
         border.width: 1
         anchors.centerIn: parent
         visible: false
-
-        function show(msg) {
-            msgText.text = msg;
-            visible = true;
-        }
 
         Text {
             id: msgText
             anchors.centerIn: parent
             font.pixelSize: 20
-            color: "#333"
+            color: '#353535'
         }
         MouseArea {
             anchors.fill: parent
             onClicked: messageDialog.visible = false
+        }
+        
+        function show(w,h,msg) {
+            messageDialog.width = w;
+            messageDialog.height = h;
+            msgText.text = msg;
+            visible = true;
         }
     }
 
@@ -68,9 +99,9 @@ Item {
         id: matchDialog
         width: 400
         height: 250
-        color: "white"
+        color: '#e0e1e4'
         radius: 10
-        border.color: "#333"
+        border.color: '#f1f1f1'
         border.width: 2
         anchors.centerIn: parent
         visible: false
@@ -89,7 +120,7 @@ Item {
             Rectangle {
                 width: 200
                 height: 40
-                border.color: "#999"
+                border.color: '#e1dfdf'
                 border.width: 1
                 radius: 5
                 Layout.alignment: Qt.AlignHCenter
@@ -132,7 +163,7 @@ Item {
                             delaySendMatch.stop();
                             matchStatusText.text = "匹配中...";
 
-                            network.connectToServer("chess.ouyangwenli.fun", 8888, 0);
+                            network.connectToServer("38.55.134.186", 8888, 0);
 
                             // 延时2000ms等待 Socket 连上
                             delaySendMatch.start();
@@ -166,7 +197,7 @@ Item {
 
         Timer {
             id: delaySendMatch
-            interval: 2000
+            interval: 1500 // 连接后延迟1500ms发送匹配请求，避免服务器还没来得及处理连接就发匹配请求导致的错误
             onTriggered: {
                 network.sendMatch(codeInput.text);
             }

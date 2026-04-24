@@ -23,7 +23,9 @@
         <file alias="images/Red_S.png">images/Red_S.png</file>
         <file alias="images/chessBoard.png">images/chessBoard.png</file>
         <file alias="images/JiNeng.png">images/JiNeng.png</file>
-        <file alias="images/PuTong.png">images/PuTong.png</file>
+    <file alias="images/PuTong.png">images/PuTong.png</file>
+    <file alias="images/Introduction.png">images/Introduction.png</file>
+    <file alias="images/Developer.png">images/Developer.png</file>
         <file alias="music/beginMusic.mp3">music/beginMusic.mp3</file>
         <file alias="music/fightingMusic.mp3">music/fightingMusic.mp3</file>
     </qresource>

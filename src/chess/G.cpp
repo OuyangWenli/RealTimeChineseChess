@@ -7,7 +7,7 @@
 General::General(int x, int y, int color) : Piece(x, y, color), isInCheck(false) {
     m_maxActionPoint = 1;
     m_actionPoint = 1;
-    setActionPointRecoveryTime(7000); // 将帅的CD为7s
+    setActionPointRecoveryTime(6000); // 将帅的CD为6s
 }
 
 void General::setIsInCheck(bool inCheck) {

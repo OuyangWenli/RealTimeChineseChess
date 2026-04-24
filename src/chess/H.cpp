@@ -4,7 +4,9 @@
 #include <string>
 
 Horse::Horse(int x, int y, int color) : Piece(x, y, color) {
-    setActionPointRecoveryTime(6000); // 马的CD为6s
+    m_maxActionPoint = 1;
+    m_actionPoint = 1;
+    setActionPointRecoveryTime(5000); // 马的CD
 }
 bool Horse::canMove(int toX, int toY, const Board &board) const {
     Piece* target = board.getPiece(toX, toY);

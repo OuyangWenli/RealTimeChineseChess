@@ -4,7 +4,9 @@
 #include <string>
 
 Chariot::Chariot(int x, int y, int color) : Piece(x, y, color) {
-    setActionPointRecoveryTime(6800); // 车的CD为6.8s
+    m_maxActionPoint = 1;
+    m_actionPoint = 1;
+    setActionPointRecoveryTime(5800); // 车的CD
 }
 
 bool Chariot::canMove(int toX, int toY, const Board &board) const {

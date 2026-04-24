@@ -50,15 +50,19 @@ def handle_client(conn, addr):
                 else:
                     rooms[code] = {'p1': conn, 'p2': None}
                     client_rooms[conn] = code
-                    print(f"[{code}] 创建房间等待中...")
+                    print(f"[{code}] 创建已房间，等待中...")
                     
             elif req_type == 'move':
                 code = client_rooms.get(conn)
                 if code and code in rooms:
                     room = rooms[code]
-                    target = room['p2'] if room['p1'] == conn else room['p1']
-                    if target:
-                        target.sendall(data)
+                    # 同时发给双端，实现绝对的服务器权威同步
+                    if room['p1']:
+                        try: room['p1'].sendall(data)
+                        except: pass
+                    if room['p2']:
+                        try: room['p2'].sendall(data)
+                        except: pass
                         
     except Exception as e:
         print(f"异常: {e}")
@@ -71,7 +75,7 @@ def handle_client(conn, addr):
             
             if not room['p1'] and not room['p2']:
                 del rooms[code]
-                print(f"[{code}] 销毁。")
+                print(f"[{code}] 房间已销毁。")
             else:
                 remaining = room['p1'] or room['p2']
                 if remaining:
@@ -87,7 +91,7 @@ if __name__ == '__main__':
     
     server.bind(('0.0.0.0', 8888))
     server.listen(100)
-    print("硬核多线程服务器已启动，死死监听端口 8888 ...")
+    print("硬核多线程服务器已启动，正在监听端口 8888 ...")
     
     while True:
         try:

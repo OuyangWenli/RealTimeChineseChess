@@ -4,7 +4,7 @@
 #include <string>
 
 Elephant::Elephant(int x, int y, int color) : Piece(x, y, color) {
-    setActionPointRecoveryTime(5400); // 象的CD为5.4s
+    setActionPointRecoveryTime(3700); // 象的CD
 }
 
 bool Elephant::canMove(int toX, int toY, const Board &board) const {

@@ -4,7 +4,9 @@
 #include <string>
 
 Cannon::Cannon(int x, int y, int color) : Piece(x, y, color) {
-    setActionPointRecoveryTime(6800); // 炮的CD为6.8s
+    m_maxActionPoint = 1;
+    m_actionPoint = 1;
+    setActionPointRecoveryTime(5800); // 炮的CD
 }
 
 bool Cannon::canMove(int toX, int toY, const Board &board) const {
