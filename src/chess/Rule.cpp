@@ -3,7 +3,7 @@
 Rule::Rule(QObject *parent) : QObject(parent),
     point_red(1), point_black(1),
     MaxPoint_red(4), MaxPoint_black(4),
-    pointRecoveryTime_red(7000), pointRecoveryTime_black(3500)
+    pointRecoveryTime_red(3500), pointRecoveryTime_black(3500)
 {
     redTimer = new QTimer(this);
     redTimer->setInterval(pointRecoveryTime_red);

@@ -14,6 +14,8 @@ Item {
 
     // 真正的动画进度属性 (0 到 100)
     property real barPercent: 0.0
+    // 记录上一次的点数以便判定变化类型（恢复 / 消耗 / 从满变为未满）
+    property int lastPoints: currentPoints
 
     // 整体纵向进度条区域
     Rectangle {
@@ -21,7 +23,7 @@ Item {
         width: 30
         height: 300
         radius: width / 2
-        color: "#00ffffff" // 透明背景，只有前景条有颜色
+        color: '#88605c5c' // 透明背景，只有前景条有颜色
         anchors.centerIn: parent
 
         Rectangle {
@@ -50,14 +52,25 @@ Item {
         }
     }
 
-    // 每次 currentPoints 发生变化并且未满时，重置并重新播放进度条
     onCurrentPointsChanged: {
         if (currentPoints < maxPoints) {
-            progressAnim.restart();
+            if (lastPoints === maxPoints || currentPoints > lastPoints) {
+                // 从满点消费或者恢复到更高点数，重置进度条并从 0 开始
+                barPercent = 0.0;
+                progressAnim.restart();
+            } else {
+                // 消耗指挥点时，保持当前动画进度，不重置
+                // 如果动画未在运行（例如刚从满点切换过），确保它在需要时运行
+                if (!progressAnim.running) progressAnim.start();
+            }
         } else {
+            // 达到满点，停止动画并显示为满
             progressAnim.stop();
             barPercent = 100.0;
         }
+
+        // 更新 lastPoints
+        lastPoints = currentPoints;
     }
 
     // 数字显示区域

@@ -21,6 +21,12 @@ Item {
     property string color
     property bool isSelected: false
 
+    // 网络等待状态：当客户端发送走子请求后，处于等待服务器仲裁确认的临时状态
+    // 在这个状态下，棋子仍然保持选中状态，但不允许再次选中或移动，直到服务器广播确认后才清理这个状态
+    // 这个设计是为了避免在网络延迟较高时，玩家会看到棋子先落子再移动的错觉（因为本地动画和位置已经改变了，但服务器还没确认）
+    property bool awaitingServer: false
+    property var pendingMove: null
+
     property color zeroAPColor:'#dab318'
     property color oneAPColor:'#026ec0'
 
@@ -221,22 +227,23 @@ Item {
                         return;
                     }
 
-                    if (!isGeneral) {
-                        if (isRed) {
-                            globalRule.point_red = globalRule.point_red - 1;
-                        } else {
-                            globalRule.point_black = globalRule.point_black - 1;
-                        }
-                    }
-
                     // 记录目标坐标，因为 movePiece 会触发死亡信号导致目标子坐标马上被修改为 -1
                     var toX = piece.logicX;
                     var toY = piece.logicY;
 
                     if (network.isConnected) {
+                        // 发送到服务器后进入“等待确认”状态：不立即在本地执行移动动画/复原，等待服务器广播后统一执行
                         network.sendMove(currSelected.logicX, currSelected.logicY, toX, toY);
+
+                        // 标记等待（在收到服务器广播前不要复原选中与位置）
+                        currSelected.pendingMove = { toX: toX, toY: toY };
+                        currSelected.awaitingServer = true;
+
+                        // 将选中状态保留（不要立刻放下），由服务端确认后统一清理
+                        return;
                     }
 
+                    // 离线或未联网状态：直接执行本地移动（原有逻辑）
                     // 调用后端 movePiece
                     board.movePiece(currSelected.logicX, currSelected.logicY, toX, toY);
 

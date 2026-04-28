@@ -56,9 +56,9 @@ Item {
             onClicked: {
                 messageDialog.show(500,250,"音乐资源：爱给网小呆瓜_26，爱给网子沐mumu\n
 图片资源：豆包\n
-界面设计：欧阳文璃\n
-后端开发：欧阳文璃\n
-测试：欧阳文璃");
+界面设计：艾 喝茉莉花茶\n
+后端开发：艾 喝茉莉花茶\n
+测试：艾 喝茉莉花茶、Ten、醉乃脓忘笛、秋前盛夏");
             }
         }
     }
@@ -163,7 +163,7 @@ Item {
                             delaySendMatch.stop();
                             matchStatusText.text = "匹配中...";
 
-                            network.connectToServer("38.55.134.186", 8888, 0);
+                            network.connectToServer("chess.ouyangwenli.fun", 8888, 0);
 
                             // 延时2000ms等待 Socket 连上
                             delaySendMatch.start();

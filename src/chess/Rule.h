@@ -18,6 +18,7 @@ public:
 
     int getPointRed() const { return point_red; }
     void setPointRed(int p) {
+        if (p < 0) p = 0; // 防止出现负数
         if (point_red != p) {
             point_red = p;
             emit pointRedChanged();
@@ -26,6 +27,7 @@ public:
 
     int getPointBlack() const { return point_black; }
     void setPointBlack(int p) {
+        if (p < 0) p = 0; // 防止出现负数
         if (point_black != p) {
             point_black = p;
             emit pointBlackChanged();

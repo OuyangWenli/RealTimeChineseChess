@@ -54,8 +54,9 @@ Item {
 
                             if (network.isConnected) {
                                 network.sendMove(logicX, logicY, lx, ly);
-                                boardRoot.selectedPiece.isSelected = false; // 仅发送请求不立刻走棋，放下棋子由服务器仲裁
-                                boardRoot.selectedPiece = null;
+                                // 标记该选中棋子正在等待服务器确认，不要立刻放下或复原动画
+                                boardRoot.selectedPiece.awaitingServer = true;
+                                boardRoot.selectedPiece.pendingMove = { toX: lx, toY: ly };
                                 return;
                             }
 
@@ -116,12 +117,29 @@ Item {
                 }
             }
 
+            // 只有当后台确认时才执行最终移动与前端动画
             board.movePiece(fx, fy, tx, ty);
 
             p.startCD(board.getPieceQml(tx, ty));
 
+            // 应用位置变化（会触发平滑的 Behavior on x/y）
             p.logicX = tx;
             p.logicY = ty;
+
+            // 如果该棋子处于等待状态并且 pendingMove 与此匹配，说明这是它的确认
+            if (p.awaitingServer && p.pendingMove && p.pendingMove.toX === tx && p.pendingMove.toY === ty) {
+                // 在移动动画完成后再放下棋子（避免先复原缩放/位置再移动的错觉）
+                // 动画持续时间与 Piece.qml 中 Behavior on x/y 的 duration 保持一致（150ms）
+                var clearTimer = Qt.createQmlObject('import QtQuick 2.0; Timer { interval: 160; repeat: false }', boardRoot);
+                clearTimer.triggered.connect(function() {
+                    p.awaitingServer = false;
+                    p.pendingMove = null;
+                    p.opacity = 1.0;
+                    p.isSelected = false; // 放下
+                    clearTimer.destroy();
+                });
+                clearTimer.start();
+            }
         }
     }
 
