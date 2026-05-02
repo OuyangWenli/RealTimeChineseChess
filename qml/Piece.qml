@@ -203,7 +203,7 @@ Item {
                 if (network.isConnected) {
                     var isRed = (piece.color === "red");
                     var isLocalRed = (network.localColor === 0);
-                    if (isRed !== isLocalRed) return; // 联机模式下只能举起自己的棋子
+                    if (isRed !== isLocalRed) return; // 只能举起自己的棋子
                 }
 
                 isSelected = true
@@ -243,7 +243,6 @@ Item {
                         return;
                     }
 
-                    // 离线或未联网状态：直接执行本地移动（原有逻辑）
                     // 调用后端 movePiece
                     board.movePiece(currSelected.logicX, currSelected.logicY, toX, toY);
 
